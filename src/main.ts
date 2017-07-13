@@ -3,7 +3,7 @@ import { Bola } from './bola';
 import { Tijolo } from './tijolo';
 
 export class Main {
-  context: any;
+  context: CanvasRenderingContext2D;
   timer: any;
   keyMap: any = {};
 
@@ -15,7 +15,10 @@ export class Main {
   ball: Bola;
   bricks: Tijolo[];
 
-  soundEffects: any[] = [];
+  soundEffects: any[] = [
+    new Audio('Blop.mp3'),
+    new Audio('MirrorBreaking.mp3')
+  ];
 
   constructor() {
     let canvas = <HTMLCanvasElement>document.getElementById('game');
@@ -33,10 +36,6 @@ export class Main {
       new Tijolo(134, 22, 50, 10, this.context),
       new Tijolo(186, 22, 50, 10, this.context)
     ];
-    this.soundEffects = [
-      new Audio('Blop.mp3'),
-      new Audio('MirrorBreaking.mp3')
-    ]
     this.hiscore = parseInt(localStorage.getItem('hiscore'));
   }
 
@@ -89,7 +88,7 @@ export class Main {
         this.context.fillText('Aperte ESPACO para iniciar', 12, 295);
         break;
       case 1:
-        this.context.fillText(this.score, 350, 595);
+        this.context.fillText(this.score.toString(), 350, 595);
         break;
       case 2:
         this.context.fillText('Fim de Jogo', 125, 295);
@@ -100,7 +99,7 @@ export class Main {
     }
 
     this.context.fillText('Hi-Score', 5, 575);
-    this.context.fillText(this.hiscore, 5, 595);
+    this.context.fillText(this.hiscore.toString(), 5, 595);
   }
 
   updateHiscore() {
@@ -112,12 +111,10 @@ export class Main {
 
   onKeyDown(e) {
     this.keyMap[e.keyCode] = true;
-    console.log(this.keyMap);
   }
 
   onKeyUp(e) {
     this.keyMap[e.keyCode] = false;
-    console.log(this.keyMap);
   }
 
   static clamp(val, min, max) {
