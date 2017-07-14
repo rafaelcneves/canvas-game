@@ -15,11 +15,6 @@ export class Main {
   ball: Bola;
   bricks: Tijolo[];
 
-  soundEffects: any[] = [
-    new Audio('Blop.mp3'),
-    new Audio('MirrorBreaking.mp3')
-  ];
-
   constructor() {
     let canvas = <HTMLCanvasElement>document.getElementById('game');
     this.context = canvas.getContext('2d');

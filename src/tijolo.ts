@@ -1,5 +1,6 @@
 import { Main } from './main';
 import { Bola } from './bola';
+import { SoundEffects } from './sound_effects';
 
 export class Tijolo {
   x: number;
@@ -43,7 +44,7 @@ export class Tijolo {
       }
 
       // pontos += 1;
-      // sons[1].play();
+      SoundEffects.playMirrorBreaking();
 
       return true;
     }

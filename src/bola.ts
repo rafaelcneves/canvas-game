@@ -1,3 +1,5 @@
+import { SoundEffects } from './sound_effects';
+
 export class Bola {
   x: number;
   y: number;
@@ -36,12 +38,12 @@ export class Bola {
   detectColision() {
     if ((this.x - this.radius) <= 0 || (this.x + this.radius) >= 400) {
       this.invertX();
-      // sons[0].play();
+      SoundEffects.playBlop();
     }
 
     if ((this.y - this.radius) <= 0 || window['main'].detectarColisaoRaquetexBola()) {
       this.invertY();
-      // sons[0].play();
+      SoundEffects.playBlop();
     }
 
     if ((this.y - this.radius) >= 600) {
