@@ -35,20 +35,19 @@ export class Bola {
     this.dirY *= -1;
   }
 
-  detectColision() {
+  detectWallColision() {
     if ((this.x - this.radius) <= 0 || (this.x + this.radius) >= 400) {
       this.invertX();
       SoundEffects.playBlop();
     }
 
-    if ((this.y - this.radius) <= 0 || window['main'].detectarColisaoRaquetexBola()) {
+    if ((this.y - this.radius) <= 0) {
       this.invertY();
       SoundEffects.playBlop();
     }
+  }
 
-    if ((this.y - this.radius) >= 600) {
-      // estado = 2;
-      // setarhiscore();
-    }
-  };
+  detectOutOfBounds() {
+    return (this.y - this.radius) >= 600;
+  }
 }
