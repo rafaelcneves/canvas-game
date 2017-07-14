@@ -70,16 +70,15 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var raquete_1 = __webpack_require__(1);
-var bola_1 = __webpack_require__(2);
-var tijolo_1 = __webpack_require__(3);
+var raquete_1 = __webpack_require__(2);
+var bola_1 = __webpack_require__(3);
+var tijolo_1 = __webpack_require__(4);
 var Main = (function () {
     function Main() {
         this.keyMap = {};
         this.state = 0;
         this.score = 0;
         this.hiscore = 0;
-        this.soundEffects = [];
         var canvas = document.getElementById('game');
         this.context = canvas.getContext('2d');
         this.player = new raquete_1.Raquete(150, 580, 100, 10, this.context);
@@ -93,10 +92,6 @@ var Main = (function () {
             new tijolo_1.Tijolo(82, 22, 50, 10, this.context),
             new tijolo_1.Tijolo(134, 22, 50, 10, this.context),
             new tijolo_1.Tijolo(186, 22, 50, 10, this.context)
-        ];
-        this.soundEffects = [
-            new Audio('Blop.mp3'),
-            new Audio('MirrorBreaking.mp3')
         ];
         this.hiscore = parseInt(localStorage.getItem('hiscore'));
     }
@@ -141,7 +136,7 @@ var Main = (function () {
                 this.context.fillText('Aperte ESPACO para iniciar', 12, 295);
                 break;
             case 1:
-                this.context.fillText(this.score, 350, 595);
+                this.context.fillText(this.score.toString(), 350, 595);
                 break;
             case 2:
                 this.context.fillText('Fim de Jogo', 125, 295);
@@ -151,7 +146,7 @@ var Main = (function () {
                 break;
         }
         this.context.fillText('Hi-Score', 5, 575);
-        this.context.fillText(this.hiscore, 5, 595);
+        this.context.fillText(this.hiscore.toString(), 5, 595);
     };
     Main.prototype.updateHiscore = function () {
         if (this.score > this.hiscore) {
@@ -161,11 +156,9 @@ var Main = (function () {
     };
     Main.prototype.onKeyDown = function (e) {
         this.keyMap[e.keyCode] = true;
-        console.log(this.keyMap);
     };
     Main.prototype.onKeyUp = function (e) {
         this.keyMap[e.keyCode] = false;
-        console.log(this.keyMap);
     };
     Main.clamp = function (val, min, max) {
         return Math.max(min, Math.min(max, val));
@@ -200,6 +193,31 @@ window.onload = function () {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var SoundEffects = (function () {
+    function SoundEffects() {
+    }
+    SoundEffects.playBlop = function () {
+        this.soundEffects[0].play();
+    };
+    SoundEffects.playMirrorBreaking = function () {
+        this.soundEffects[1].play();
+    };
+    SoundEffects.soundEffects = [
+        new Audio('Blop.mp3'),
+        new Audio('MirrorBreaking.mp3')
+    ];
+    return SoundEffects;
+}());
+exports.SoundEffects = SoundEffects;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 var Raquete = (function () {
     function Raquete(x, y, width, height, context) {
         this.x = x;
@@ -220,12 +238,13 @@ exports.Raquete = Raquete;
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var sound_effects_1 = __webpack_require__(1);
 var Bola = (function () {
     function Bola(x, y, radius, context) {
         this.dirX = (Math.random() > 0.5) ? 3 : -3;
@@ -253,9 +272,11 @@ var Bola = (function () {
     Bola.prototype.detectColision = function () {
         if ((this.x - this.radius) <= 0 || (this.x + this.radius) >= 400) {
             this.invertX();
+            sound_effects_1.SoundEffects.playBlop();
         }
         if ((this.y - this.radius) <= 0 || window['main'].detectarColisaoRaquetexBola()) {
             this.invertY();
+            sound_effects_1.SoundEffects.playBlop();
         }
         if ((this.y - this.radius) >= 600) {
         }
@@ -267,13 +288,14 @@ exports.Bola = Bola;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var main_1 = __webpack_require__(0);
+var sound_effects_1 = __webpack_require__(1);
 var Tijolo = (function () {
     function Tijolo(x, y, width, height, context) {
         this.x = x;
@@ -305,6 +327,7 @@ var Tijolo = (function () {
                 ball.invertY();
                 ball.invertX();
             }
+            sound_effects_1.SoundEffects.playMirrorBreaking();
             return true;
         }
         return false;
